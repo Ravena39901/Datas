@@ -1,0 +1,90 @@
+Descrição Geral
+Este programa implementa uma fila circular de datas em C, com capacidade para até 100 datas. O sistema permite:
+*Inserção de datas
+*Remoção de datas
+*Ordenação cronológica das datas
+*Exibição das datas em ordem
+
+Estruturas de Dados
+Data
+Armazena uma data com dia, mês e ano.
+
+typedef struct {
+    int dia, mes, ano;
+} Data;
+
+Fila
+Implementa uma fila circular para armazenar datas.
+
+typedef struct {
+    Data datas[MAX];  // Array para armazenar as datas
+    int inicio, fim;  // Índices para controle da fila circular
+} Fila;
+
+Funções Principais
+Inicialização:
+
+void começar(Fila *f)
+*Inicializa a fila, definindo inicio e fim como -1 (fila vazia).
+
+Verificação de Estado:
+bool vazia(Fila *f)
+*Retorna true se a fila estiver vazia.
+
+bool cheia(Fila *f)
+*Retorna true se a fila estiver cheia.
+
+Operações da Fila:
+void inserir(Fila *f, Data d)
+*Insere uma nova data no final da fila.
+*Verifica se há espaço disponível.
+
+Data remover(Fila *f):
+*Remove e retorna a data do início da fila.
+*Retorna data inválida (0/0/0) se a fila estiver vazia.
+
+Ordenação
+
+int verificar(Data a, Data b)
+*Compara duas datas:
+  -Retorna valor positivo se a > b
+  -Retorna valor negativo se a < b
+  -Retorna 0 se as datas forem iguais
+
+void organizar(Fila *f)
+*Ordena as datas em ordem cronológica crescente usando o algoritmo Bubble Sort.
+
+Função Principal (main)
+*Inicializa a fila
+*Solicita o número de datas a serem inseridas
+*Lê cada data do usuário e insere na fila
+*Ordena as datas
+*Exibe as datas em ordem cronológica
+
+Formato de Entrada/Saída
+*Entrada: As datas são inseridas no formato "Dia Mes Ano"
+*Exemplo: 15 08 2023 para 15 de agosto de 2023
+
+Saída: As datas são exibidas no formato "DD/MM/AAAA"
+*Exemplo: 15/08/2023
+
+Tratamento de Erros
+*Verifica se o número de datas está dentro do limite (1-100)
+*Impede inserção em fila cheia
+*Trata remoção em fila vazia
+
+Exemplo de Uso
+Numero de datas? 3
+Data 1 (Dia Mes Ano): 15 08 2023
+Data 2 (Dia Mes Ano): 01 01 2023
+Data 3 (Dia Mes Ano): 31 12 2022
+
+A ordem das datas são:
+31/12/2022
+01/01/2023
+15/08/2023
+
+Observações
+*A ordenação é realizada em memória usando Bubble Sort (adequado para pequenas quantidades de dados)
+*A fila circular otimiza o uso do array evitando deslocamentos desnecessários
+*O formato de data segue o padrão brasileiro (DD/MM/AAAA)
