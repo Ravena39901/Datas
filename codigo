@@ -99,6 +99,11 @@ int main() {
     }
     
     organizar(&fila);
+FILE *arquivo = fopen("datas_ordenadas.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao criar o arquivo!\n");
+        return 1;
+    }
     
     printf("\nA ordem das datas são:\n");
     while (!vazia(&fila)) {
