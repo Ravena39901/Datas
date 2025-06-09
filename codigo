@@ -98,18 +98,25 @@ int main() {
         inserir(&fila, d);
     }
     
-    organizar(&fila);
-FILE *arquivo = fopen("datas_ordenadas.txt", "w");
+        organizar(&fila);
+    
+    FILE *arquivo = fopen("datas_ordenadas.txt", "w");
     if (arquivo == NULL) {
         printf("Erro ao criar o arquivo!\n");
         return 1;
     }
     
     printf("\nA ordem das datas são:\n");
+    fprintf(arquivo, "Datas ordenadas:\n");
+    
     while (!vazia(&fila)) {
         Data d = remover(&fila);
         printf("%02d/%02d/%04d\n", d.dia, d.mes, d.ano);
+        fprintf(arquivo, "%02d/%02d/%04d\n", d.dia, d.mes, d.ano); 
     }
+    
+    fclose(arquivo);
+    printf("\nAs datas foram salvas no arquivo 'datas_ordenadas.txt'\n");
     
     return 0;
 }
