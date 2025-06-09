@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 100
+
+typedef struct {
+    int dia, mes, ano;
+} Data;
+
+typedef struct {
+    Data datas[MAX];
+    int inicio, fim; 
+} Fila;
+
+void começar(Fila *f) { 
+    f->inicio = f->fim = -1;
+}
+
+bool vazia(Fila *f) {
+    return f->inicio == -1;
+}
+
+bool cheia(Fila *f) {
+    return (f->fim + 1) % MAX == f->inicio;
+}
+
+void inserir(Fila *f, Data d) {
+    if (cheia(f)) {
+        printf("Fila esta cheia! Não foi possível adicionar novas data.\n");
+        return;
+    }
+    
+    if (vazia(f)) f->inicio = 0;
+    f->fim = (f->fim + 1) % MAX;
+    f->datas[f->fim] = d;
+}
+
+Data remover(Fila *f) {
+    if (vazia(f)) {
+        printf("Fila vazia! Retornando data inválida.\n");
+        return (Data){0, 0, 0};
+    }
+    
+    Data d = f->datas[f->inicio];
+    if (f->inicio == f->fim) {
+        f->inicio = f->fim = -1;
+    } else {
+        f->inicio = (f->inicio + 1) % MAX;
+    }
+    
+    return d;
+}
+
+int verificar(Data a, Data b) {
+    if (a.ano != b.ano) return a.ano - b.ano;
+    if (a.mes != b.mes) return a.mes - b.mes;
+    return a.dia - b.dia;
+}
+
+void organizar(Fila *f) {
+    if (vazia(f)) return;
+    
+    Data temp[MAX];
+    int n = 0;
+    
+    while (!vazia(f)) temp[n++] = remover(f);
+    
+    for (int i = 0; i < n-1; i++) {
+        for (int j = 0; j < n-i-1; j++) {
+            if (verificar(temp[j], temp[j+1]) > 0) {
+                Data aux = temp[j];
+                temp[j] = temp[j+1];
+                temp[j+1] = aux;
+            }
+        }
+    }
+    
+    for (int i = 0; i < n; i++) inserir(f, temp[i]);
+}
+
+int main() {
+    Fila fila;
+    começar(&fila);
+    
+    int n;
+    printf("Numero de datas? ");
+    scanf("%d", &n);
+    
+    if (n <= 0 || n > MAX) {
+        printf("Número de datas incorreto! Deve estar entre 1 e %d.\n", MAX);
+        return 1;
+    }
+    
+    for (int i = 0; i < n; i++) {
+        Data d;
+        printf("Data %d (Dia Mes Ano): ", i+1);
+        scanf("%d %d %d", &d.dia, &d.mes, &d.ano);
+        inserir(&fila, d);
+    }
+    
+    organizar(&fila);
+    
+    printf("\nA ordem das datas são:\n");
+    while (!vazia(&fila)) {
+        Data d = remover(&fila);
+        printf("%02d/%02d/%04d\n", d.dia, d.mes, d.ano);
+    }
+    
+    return 0;
+}
